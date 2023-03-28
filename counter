@@ -82,3 +82,36 @@ begin
 				BCD0 <= BCD0 + 1; 
 end
 endmodule*/
+
+// ring counter
+/*
+
+module Ring (E, Clock, Q); 
+parameter n = 4; 
+input E, Clock; 
+output reg [n-1:0] Q; 
+								// Clock Division
+reg [24:0]clock_div;
+reg use_clock;
+always@(posedge Clock)
+begin 
+	clock_div<=clock_div+1;
+	use_clock<=clock_div[24];
+end
+
+integer k;
+initial
+begin
+	Q={1'b1,{(n-1){1'b0}}};
+end
+always @(posedge use_clock) 
+begin 
+	if (E) 
+		begin 
+			Q[n-1] <= ~Q[0]; 
+			for(k = n-2; k >= 0; k = k-1) 
+				Q[k] <= Q[k+1]; 
+		end 
+end
+endmodule
+*/
