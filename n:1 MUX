@@ -38,3 +38,27 @@ output s,cout;
 MUX_nx1 M1(1'b0,{a,b},{cin,~cin,~cin,cin},s);
 MUX_nx1 M2(1'b0,{a,b},{1'b0,cin,cin,1'b1},cout);
 endmodule*/
+
+
+//full adder using mux
+/*
+//function implementation using mux 
+module MUXnx1(ebar,s,d,y);
+input ebar;
+parameter n=2;
+input [0:2**n-1]d;
+input [n-1:0]s;
+output reg y;
+always@(ebar,s,d)
+begin
+	if (ebar) y=1'b0;
+	else	y=d[s];
+end
+endmodule
+
+module Boolean_Fn_using_MUX(a,b,c,d,f); //f=m(0,1,5,6,9,10,11,15)
+input a,b,c,d;
+output f;
+MUXnx1 M1(1'b0,{a,b},{~c,c^d,c|d,c&d},f);
+endmodule
+*/
