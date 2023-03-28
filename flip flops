@@ -1,0 +1,87 @@
+module SR_FF(clr_bar, pr_bar,clk,s,r,q,qb);
+input clr_bar, pr_bar,clk,s,r;
+output reg q,qb;
+initial
+begin
+	q=1'b0;
+	qb=1'b1;
+end
+reg [24:0]clock_div;
+reg use_clock;
+always@(posedge clk)
+begin 
+	clock_div<=clock_div+1;
+	use_clock<=clock_div[24];
+end
+
+always@(negedge pr_bar,negedge clr_bar,posedge use_clock)
+begin
+	if(!pr_bar) begin q=1'b1;qb=1'b0; end
+	else if(!clr_bar) begin q=1'b0; qb=1'b1; end
+	else 
+		case({s,r})
+			2'b00 : begin q=q; qb=qb; end
+			2'b01 : begin q=1'b0; qb=1'b1; end
+			2'b10 : begin q=1'b1; qb=1'b0; end
+			2'b11 : begin q=1'b1; qb=1'b1; end
+		endcase
+end
+endmodule
+
+/*module JK_FF(clr_bar, pr_bar,clk,j,k,q,qb);
+input clr_bar, pr_bar,clk,j,k;
+output reg q,qb;
+initial
+begin
+	q=1'b0;
+	qb=1'b1;
+end
+always@(negedge pr_bar,negedge clr_bar,posedge clk)
+begin
+	if(!pr_bar) q=1'b1;
+	else if(!clr_bar) q=1'b0;
+	else 
+		case({j,k})
+			2'b00 : q=q;
+			2'b01 : q=1'b0;
+			2'b10 : q=1'b1;
+			2'b11 : q=~q;
+		endcase
+	qb=~q;
+end
+endmodule*/
+
+/*module D_FF(clr_bar, pr_bar,clk,d,q,qb);
+input clr_bar, pr_bar,clk,d;
+output reg q,qb;
+initial
+begin
+	q=1'b0;
+	qb=1'b1;
+end
+always@(negedge pr_bar,negedge clr_bar,posedge clk)
+begin
+	if(!pr_bar) q=1'b1;
+	else if(!clr_bar) q=1'b0;
+	else q=d;
+	qb=~q;
+end
+endmodule*/
+
+/*module T_FF(clr_bar, pr_bar,clk,t,q,qb);
+input clr_bar, pr_bar,clk,t;
+output reg q,qb;
+initial
+begin
+	q=1'b0;
+	qb=1'b1;
+end
+always@(negedge pr_bar,negedge clr_bar,posedge clk)
+begin
+	if(!pr_bar) q=1'b1;
+	else if(!clr_bar) q=1'b0;
+	else if(t) q=~q;
+	else q=q;
+	qb=~q;
+end
+endmodule*/
