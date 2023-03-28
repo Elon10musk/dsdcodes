@@ -1,0 +1,50 @@
+
+module half_adder (A , B , S , C );
+         input A , B; 
+         output S , C;
+         xor ( S , A , B );
+         and ( C , A , B );
+end module
+
+
+
+module full_adder(
+  input a,
+  input b,
+  input cin,
+  output sum,
+  output cout
+);
+
+  assign sum = a ^ b ^ cin;
+  assign cout = (a & b) | (cin & (a ^ b));
+  
+endmodule
+
+
+
+module half_subtractor(
+  input a,
+  input b,
+  output difference,
+  output borrow
+);
+
+  assign difference = a ^ b;
+  assign borrow = ~a & b;
+
+endmodule
+
+
+
+module full_Sub(
+input a,
+input b,
+input cin,
+output diff,
+output br);
+assign diff = a^b^cin;
+assign br = (~a & b)|(cin & ~a)|(b & cin);
+endmodule
+
+
