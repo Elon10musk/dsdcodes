@@ -1,0 +1,57 @@
+module decoder(ebar,x,y);
+	parameter n=3;
+	input ebar;
+	input[(n-1):0] x;
+	output reg [0:2**n-1]y;
+   
+	integer i;
+	always@(ebar,x)
+	begin
+		for(i=0;i<2**n;i=i+1)
+			if(ebar==0 && x==i)
+				y[i]=1'b0;  //Maxterm Generator
+			else
+				y[i]=1'b1;
+	end
+endmodule
+
+
+/*
+module Boolean_Fn_using_Decoder(a,b,c,f);
+input a,b,c;
+output f;
+parameter n=3;
+wire [0:2**n-1]y;
+decoder D1(1'b0,{a,b,c},y);
+nand(f,y[0],y[3],y[4],y[5]);
+endmodule
+*/
+
+
+/*
+//full adder using decoder
+module decoder1(ebar,x,y);
+	parameter n=3;
+	input ebar;
+	input[(n-1):0] x;
+	output reg [0:2**n-1]y;
+   
+	integer i;
+	always@(ebar,x)
+		for(i=0;i<2**n;i=i+1)
+			if(ebar==0 && x==i)
+				y[i]=0;  //Maxterm Generator
+			else
+				y[i]=1;
+endmodule
+
+module FA_using_Decoder(a,b,c,s,cout);
+input a,b,c;
+output s,cout;
+parameter n=3;
+wire [0:2**n-1]y;
+decoder1 D1(1'b0,{a,b,c},y);
+nand(s,y[1],y[2],y[4],y[7]);
+nand(cout,y[3],y[5],y[6],y[7]);
+endmodule
+*/
