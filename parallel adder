@@ -1,0 +1,36 @@
+module PA_PS(cin,a,b,s,cout);
+parameter n=2;
+input cin;
+input [n-1:0]a,b;
+output reg [n-1:0]s;
+output reg cout;
+reg [n-1:0]p;
+always@(*)
+begin
+	if(cin)	
+		p=~b;
+	else
+		p=b;
+PA (cin,a,p,s,cout);
+end
+
+task PA;
+parameter n=n;
+input cin;
+input [n-1:0]a,b;
+output reg [n-1:0]s;
+output reg cout;
+reg [n:0]c;
+
+integer k;
+begin
+	c[0]=cin;
+	for(k=0;k<n;k=k+1)
+	begin
+		s[k]=a[k]^b[k]^c[k];
+		c[k+1]=((a[k]^b[k])&c[k])|(a[k]&b[k]);
+	end
+	cout=c[n];
+end
+endtask
+endmodule
