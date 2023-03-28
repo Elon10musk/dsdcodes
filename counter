@@ -1,0 +1,84 @@
+module upcount (R, Reset_bar, Clock, E, L, Q); 
+parameter n=2;
+input [n-1:0] R; 
+input Reset_bar, Clock, E, L; 
+output reg [n-1:0] Q;
+reg [22:0]clock_div=0;
+reg use_clock;
+always@(posedge Clock)
+begin 
+	clock_div<=clock_div+1;
+	use_clock<=clock_div[22];
+end
+always @(posedge use_clock) 
+	if (!Reset_bar) Q <= 0; 
+	else if (L) Q <= R; 
+	else if (E) Q <= Q + 1;
+endmodule
+
+
+/*module updowncount(R, Clock, L, E, up_down, Q); 
+parameter n = 4; 
+input [n-1:0] R; 
+input Clock, L, E, up_down; 
+output reg [n-1:0] Q;
+always @(posedge Clock) 
+	if (L) Q <= R; 
+	else if (E) Q <= Q + (up_down ? 1 : -1);
+endmodule
+
+//Random Sequence Generator 0--> 1 --> 2 -->4 --> 8 --> 3 --> 5 --> 6 --> 9 --> 10 --> 12 and repeat
+module Random_seq (R, Resetn, Clock, E, Q); 
+input [3:0] R; 
+input Resetn, Clock, E; 
+output reg [3:0] Q;
+always @(negedge Resetn, posedge Clock)
+	if(!Resetn) Q=R;
+	else if(E)
+		case(Q)
+			4'd0 : Q=4'd1;
+			4'd1 : Q=4'd2;
+			4'd2 : Q=4'd4;
+			4'd4 : Q=4'd8;
+			4'd8 : Q=4'd3;
+			4'd3 : Q=4'd5;
+			4'd5 : Q=4'd6;
+			4'd6 : Q=4'd9;
+			4'd9 : Q=4'd10;
+			4'd10 : Q=4'd1;
+			4'd12 : Q=4'd0;
+		endcase
+endmodule
+
+module BCD_count(Clock, Clear, E, BCD);
+input Clock, Clear, E;
+output reg [3:0]BCD;
+always @(posedge Clock) 
+begin 
+	if (Clear) BCD <= 0; 
+	else if (E) 
+			if (BCD == 4'b1001) BCD <= 0; 
+			else BCD <= BCD + 1; 
+end
+endmodule
+
+module BCD_2digit (Clock, Clear, E, BCD1, BCD0); 
+input Clock, Clear, E; 
+output reg [3:0] BCD1, BCD0;
+always @(posedge Clock) 
+begin 
+	if (Clear) 
+		begin 
+			BCD1 <= 0; BCD0 <= 0; 
+		end 
+	else if (E) 
+			if (BCD0 == 4'b1001) 
+				begin BCD0 <= 0; 
+					if (BCD1 == 4'b1001) 
+						BCD1 <= 0; 
+					else BCD1 <= BCD1 + 1; 
+				end 
+			else 
+				BCD0 <= BCD0 + 1; 
+end
+endmodule*/
